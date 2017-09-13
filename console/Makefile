@@ -12,6 +12,9 @@ BUILD_TARGET		:= $(APP)-$(OS)-$(STACK)-$(PLATFORM)
 all:
 	$(MAKE) -C $(WICED_SDK_PATH) -f $(WICED_SDK_MAKEFILE) $(BUILD_TARGET) 
 
+verbose:
+	$(MAKE) --debug=v -C $(WICED_SDK_PATH) -f $(WICED_SDK_MAKEFILE) $(BUILD_TARGET) 
+
 burn:
 	$(MAKE) -C $(WICED_SDK_PATH) -f $(WICED_SDK_MAKEFILE) $(BUILD_TARGET) download run 
 
