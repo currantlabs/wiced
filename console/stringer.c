@@ -37,6 +37,7 @@
  */
 
 #include "wiced.h"
+#include "stringer_pal.h"
 
 /******************************************************
  *                      Macros
@@ -102,6 +103,7 @@ void application_start( )
     /* Wait for user input. If received, echo it back to the terminal */
     while ( wiced_uart_receive_bytes( STDIO_UART, &c, &expected_data_size, WICED_NEVER_TIMEOUT ) == WICED_SUCCESS )
     {
+        c = stringer_char_xform(c);
         wiced_uart_transmit_bytes( STDIO_UART, &c, 1 );
         expected_data_size = 1;
     }
