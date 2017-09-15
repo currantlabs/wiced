@@ -89,6 +89,8 @@ uint8_t             rx_data[RX_BUFFER_SIZE];
 void application_start( )
 {
     char c;
+    char linefeed = '\n';
+    char carriagereturn = '\r';
     uint32_t expected_data_size = 1;
 
     /* Initialise ring buffer */
@@ -105,6 +107,16 @@ void application_start( )
     {
         c = stringer_char_xform(c);
         wiced_uart_transmit_bytes( STDIO_UART, &c, 1 );
+
+        if (c == carriagereturn)
+        {
+            wiced_uart_transmit_bytes( STDIO_UART, &linefeed, 1 );
+        }
+        if (c == linefeed)
+        {
+            wiced_uart_transmit_bytes( STDIO_UART, &carriagereturn, 1 );
+        }
+
         expected_data_size = 1;
     }
 }
