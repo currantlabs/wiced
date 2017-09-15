@@ -5,6 +5,8 @@
 #include "internal/wiced_internal_api.h"
 #include "FreeRTOSConfig.h"
 
+#include "stringer_pal.h"
+
 /******************************************************
  *                    Constants
  ******************************************************/
@@ -22,6 +24,8 @@
 
 static void application_thread_main( void *arg );
 static TaskHandle_t  app_thread_handle;
+
+static TaskHandle_t button_thread_handle;
 
 #ifndef WICED_DISABLE_WATCHDOG
 static TaskHandle_t  system_monitor_thread_handle;
@@ -52,6 +56,8 @@ int main( void )
 #endif /* WICED_DISABLE_WATCHDOG */
     /* Create an initial thread */
     xTaskCreate( application_thread_main, "app_thread", APPLICATION_STACK_SIZE/sizeof( portSTACK_TYPE ), NULL, WICED_PRIORITY_TO_NATIVE_PRIORITY(WICED_APPLICATION_PRIORITY), &app_thread_handle);
+    /* Create an additional thread for the hell of it - something to watch the buttons */
+    xTaskCreate( button_thread_main, "button_thread", APPLICATION_STACK_SIZE/sizeof( portSTACK_TYPE ), NULL, WICED_PRIORITY_TO_NATIVE_PRIORITY(WICED_APPLICATION_PRIORITY), &button_thread_handle);
 
     /* Start the FreeRTOS scheduler - this call should never return */
     vTaskStartScheduler( );
